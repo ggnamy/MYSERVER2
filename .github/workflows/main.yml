@@ -16,10 +16,13 @@ jobs:
           node-version: '18'
           
       - name: Install packages
-        run: npm install
+        run: |
+          cd MYSERVER2
+          npm install
 
       - name: Run testing
         run: |
+          cd MYSERVER2
           output=$(node dist/Test1.js)
 
           if [ $output -ne 0 ]; then
