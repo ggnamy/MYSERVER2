@@ -1,0 +1,8 @@
+name: Genius-an
+on: push
+jobs:
+ my-job:
+       runs-on: ubuntu-letest
+       steps:
+       - name: my-step
+       run: echo "Genius-an"
