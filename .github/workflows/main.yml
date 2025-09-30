@@ -7,22 +7,39 @@ jobs:
   my-job:
     runs-on: ubuntu-latest
     steps:
+    
       - name: Checkout code
         uses: actions/checkout@v2
+
 
       - name: Set Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-          
+
+
+      - name: Find package.json
+        id: find_package
+        run: |
+          PACKAGE_DIR=$(find . -name package.json -exec dirname {} \; | head -n 1)
+          if [ -z "$PACKAGE_DIR" ]; then
+            echo "Error: package.json not found"
+            exit 1
+          fi
+          echo "PACKAGE_DIR=$PACKAGE_DIR" >> $GITHUB_ENV
+          echo "Found package.json in $PACKAGE_DIR"
+
+
       - name: Install packages
         run: |
-          cd MYSERVER2
+          echo "Installing packages in $PACKAGE_DIR"
+          cd $PACKAGE_DIR
           npm install
+
 
       - name: Run testing
         run: |
-          cd MYSERVER2
+          cd $PACKAGE_DIR
           output=$(node dist/Test1.js)
 
           if [ $output -ne 0 ]; then
